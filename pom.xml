@@ -38,6 +38,7 @@
 			<module>brainfuck</module>
 			<module>c</module>
 			<module>calculator</module>
+			<module>capnproto</module>
 			<module>clf</module>
 			<module>clif</module>
 			<module>clojure</module>
@@ -51,7 +52,7 @@
 			<module>csv</module>
 			<module>datetime</module>
 			<module>dcm</module>
-         	<module>dice</module>
+			<module>dice</module>
 			<module>dot</module>
 			<module>ecmascript</module>
 			<module>emailaddress</module>
