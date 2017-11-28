@@ -1,1 +1,1 @@
-ANTLR v4 grammar for the Cap'n Proto Schema Language: https://capnproto.org/language.html
+ANTLR v4 grammar for the Cap'n Proto schema language: https://capnproto.org/language.html
