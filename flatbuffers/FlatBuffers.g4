@@ -1,5 +1,5 @@
 
-grammar Flatbuffers ;
+grammar FlatBuffers ;
 
 schema : include* ( namespace_decl | type_decl | enum_decl | root_decl | file_extension_decl | file_identifier_decl | attribute_decl | rpc_decl | object )* ;
 
