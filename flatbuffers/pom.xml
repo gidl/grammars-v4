@@ -10,6 +10,7 @@
 		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -18,7 +19,7 @@
 				<version>${antlr.version}</version>
 				<configuration>
 					<sourceDirectory>${basedir}</sourceDirectory>
-					<grammars>flatbuffers.g4</grammars>
+					<grammars>FlatBuffers.g4</grammars>
 					<visitor>true</visitor>
 					<listener>true</listener>
 				</configuration>
@@ -38,7 +39,7 @@
 					<verbose>false</verbose>
 					<showTree>false</showTree>
 					<entryPoint>sourceFile</entryPoint>
-					<grammarName>flatbuffers</grammarName>
+					<grammarName>FlatBuffers</grammarName>
 					<packageName></packageName>
 					<exampleFiles>examples/</exampleFiles>
 				</configuration>

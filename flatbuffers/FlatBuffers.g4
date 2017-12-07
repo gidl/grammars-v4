@@ -9,7 +9,7 @@ namespace_decl : 'namespace' IDENT ( '.' IDENT )* ';' ;
 
 attribute_decl : 'attribute' string_constant ';' ;
 
-type_decl : ( 'table' | 'struct' ) IDENT metadata { field_decl+ } ;
+type_decl : ( 'table' | 'struct' ) IDENT metadata '{' ( field_decl )+ '}' ;
 
 enum_decl : ( 'enum' IDENT ( ':' type )? | 'union' IDENT ) metadata '{' commasep_enumval_decl '}' ;
 
@@ -21,7 +21,11 @@ rpc_decl : 'rpc_service' IDENT '{' rpc_method+ '}' ;
 
 rpc_method : IDENT '(' IDENT ')' ':' IDENT metadata ';' ;
 
-type : '[' type ']' | BASE_TYPE_NAME | IDENT ;
+// too complex for now: type : '[' type ']' | BASE_TYPE_NAME | IDENT ;
+
+type : '[' base_type ']' | base_type ;
+
+base_type : BASE_TYPE_NAME | IDENT ;
 
 BASE_TYPE_NAME : 'bool' | 'byte' | 'ubyte' | 'short' | 'ushort' | 'int' | 'uint' | 'float' | 'long' | 'ulong' | 'double' | 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'int64' | 'uint64' | 'float32' | 'float64' | 'string' ;
 
@@ -53,15 +57,15 @@ file_extension_decl : 'file_extension' string_constant ;
 
 file_identifier_decl : 'file_identifier' string_constant ;
 
-fragment DIGIT : [0-9] ;
-
 fragment LETTER_INCL_DIGITS : [a-zA-Z0-9_] ;
 
 fragment LETTER_EXCL_DIGITS : [a-zA-Z_] ;
 
-integer_constant : ( '-' )? (DIGIT)+ | 'true' | 'false' ;
+INT : [0-9]+ ;
 
-float_constant : ('-')? (DIGIT)+ '.' (DIGIT)+ (('e'|'E') ('+'|'-')? (DIGIT)+)? ;
+integer_constant : ( '-' )? INT | 'true' | 'false' ;
+
+float_constant : ('-')? INT '.' INT (('e'|'E') ('+'|'-')? INT )? ;
 
 string_constant : '"' .*? '"' ;
 
