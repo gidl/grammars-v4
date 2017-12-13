@@ -25,7 +25,7 @@ rpc_method : IDENT '(' IDENT ')' ':' IDENT metadata ';' ;
 
 type : '[' base_type ']' | base_type ;
 
-base_type : BASE_TYPE_NAME | IDENT ;
+base_type : BASE_TYPE_NAME | ns_ident ;
 
 BASE_TYPE_NAME : 'bool' | 'byte' | 'ubyte' | 'short' | 'ushort' | 'int' | 'uint' | 'float' | 'long' | 'ulong' | 'double' | 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'int64' | 'uint64' | 'float32' | 'float64' | 'string' ;
 
@@ -39,7 +39,9 @@ commasep_ident_with_opt_single_value : ident_with_opt_single_value ( ',' ident_w
 
 metadata : ( '(' commasep_ident_with_opt_single_value ')' )? ;
 
-scalar : integer_constant | float_constant ;
+// fix grammar: enum values are allowed as well
+
+scalar : integer_constant | float_constant | IDENT ;
 
 object : '{' commasep_ident_with_value '}' ;
 
@@ -63,10 +65,14 @@ fragment LETTER_EXCL_DIGITS : [a-zA-Z_] ;
 
 INT : [0-9]+ ;
 
-integer_constant : ( '-' )? INT | 'true' | 'false' ;
+integer_constant : ('-')? INT | 'true' | 'false' ;
 
 float_constant : ('-')? INT '.' INT (('e'|'E') ('+'|'-')? INT )? ;
 
 string_constant : '"' .*? '"' ;
 
+ns_ident : ( IDENT '.' )? IDENT ;
+
 IDENT : LETTER_EXCL_DIGITS ( LETTER_INCL_DIGITS )* ;
+
+WHITESPACE : [ \t\r\n] -> skip ;
