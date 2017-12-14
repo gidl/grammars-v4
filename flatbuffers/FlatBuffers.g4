@@ -75,4 +75,6 @@ ns_ident : ( IDENT '.' )? IDENT ;
 
 IDENT : LETTER_EXCL_DIGITS ( LETTER_INCL_DIGITS )* ;
 
+COMMENT : '//' ~[\r\n]* -> channel(HIDDEN);
+
 WHITESPACE : [ \t\r\n] -> skip ;
