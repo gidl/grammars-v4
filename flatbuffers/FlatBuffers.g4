@@ -3,11 +3,11 @@ grammar FlatBuffers ;
 
 schema : include* ( namespace_decl | type_decl | enum_decl | root_decl | file_extension_decl | file_identifier_decl | attribute_decl | rpc_decl | object )* ;
 
-include : 'include' string_constant ';' ;
+include : 'include' STRING_CONSTANT ';' ;
 
 namespace_decl : 'namespace' IDENT ( '.' IDENT )* ';' ;
 
-attribute_decl : 'attribute' string_constant ';' ;
+attribute_decl : 'attribute' STRING_CONSTANT ';' ;
 
 type_decl : ( 'table' | 'struct' ) IDENT metadata '{' ( field_decl )+ '}' ;
 
@@ -24,7 +24,7 @@ rpc_method : IDENT '(' IDENT ')' ':' IDENT metadata ';' ;
 // fixed original grammar: allow namespaces for IDENTs
 type : '[' type ']' | BASE_TYPE_NAME | ns_ident ;
 
-enumval_decl : IDENT ( '=' integer_constant )? ;
+enumval_decl : IDENT ( '=' INTEGER_CONSTANT )? ;
 
 commasep_enumval_decl : enumval_decl ( ',' enumval_decl )* ;
 
@@ -35,7 +35,7 @@ commasep_ident_with_opt_single_value : ident_with_opt_single_value ( ',' ident_w
 metadata : ( '(' commasep_ident_with_opt_single_value ')' )? ;
 
 // fix original grammar: enum values (IDENT) are allowed as well
-scalar : integer_constant | float_constant | IDENT ;
+scalar : INTEGER_CONSTANT | FLOAT_CONSTANT | IDENT ;
 
 object : '{' commasep_ident_with_value '}' ;
 
@@ -43,19 +43,22 @@ ident_with_value : IDENT ':' value ;
 
 commasep_ident_with_value : ident_with_value ( ',' ident_with_value )* ;
 
-single_value : scalar | string_constant ;
+single_value : scalar | STRING_CONSTANT ;
 
 value : single_value | object | '[' commasep_value ']' ;
 
 commasep_value : value( ',' value )* ;
 
-file_extension_decl : 'file_extension' string_constant ;
+file_extension_decl : 'file_extension' STRING_CONSTANT ;
 
-file_identifier_decl : 'file_identifier' string_constant ;
+file_identifier_decl : 'file_identifier' STRING_CONSTANT ;
 
 ns_ident : ( IDENT '.' )? IDENT ;
 
-string_constant : '"' .*? '"' ;
+STRING_CONSTANT : '"' ~["\r\n]* '"' ;
+
+// fixed original grammar: allow line comments
+COMMENT : '//' ~[\r\n]* -> channel(HIDDEN);
 
 BASE_TYPE_NAME : 'bool' | 'byte' | 'ubyte' | 'short' | 'ushort' | 'int' | 'uint' | 'float' | 'long' | 'ulong' | 'double' | 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'int64' | 'uint64' | 'float32' | 'float64' | 'string' ;
 
@@ -65,13 +68,8 @@ fragment LETTER_INCL_DIGITS : [a-zA-Z0-9_] ;
 
 fragment LETTER_EXCL_DIGITS : [a-zA-Z_] ;
 
-INT : [0-9]+ ;
+INTEGER_CONSTANT : '-'? [0-9]+ | 'true' | 'false' ;
 
-integer_constant : '-'? INT | 'true' | 'false' ;
-
-float_constant : '-'? INT '.' INT (('e'|'E') ('+'|'-')? INT )? ;
-
-// fixed original grammar: allow line comments
-COMMENT : '//' ~[\r\n]* -> channel(HIDDEN);
+FLOAT_CONSTANT : '-'? [0-9]+ '.' [0-9]+ (('e'|'E') ('+'|'-')? [0-9]+ )? ;
 
 WHITESPACE : [ \t\r\n] -> skip ;

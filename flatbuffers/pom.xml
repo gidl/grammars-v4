@@ -37,7 +37,7 @@
 				<version>${antlr4test-maven-plugin.version}</version>
 				<configuration>
 					<verbose>true</verbose>
-					<showTree>false</showTree>
+					<showTree>true</showTree>
 					<entryPoint>schema</entryPoint>
 					<grammarName>FlatBuffers</grammarName>
 					<packageName></packageName>
