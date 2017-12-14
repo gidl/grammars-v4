@@ -1,8 +1,6 @@
 
 grammar FlatBuffers ;
 
-// Parser rules
-
 schema : include* ( namespace_decl | type_decl | enum_decl | root_decl | file_extension_decl | file_identifier_decl | attribute_decl | rpc_decl | object )* ;
 
 include : 'include' string_constant ';' ;
@@ -23,11 +21,8 @@ rpc_decl : 'rpc_service' IDENT '{' rpc_method+ '}' ;
 
 rpc_method : IDENT '(' IDENT ')' ':' IDENT metadata ';' ;
 
-// too complex for now: type : '[' type ']' | BASE_TYPE_NAME | IDENT ;
-
-type : '[' base_type ']' | base_type ;
-
-base_type : BASE_TYPE_NAME | ns_ident ;
+// fixed original grammar: allow namespaces for IDENTs
+type : '[' type ']' | BASE_TYPE_NAME | ns_ident ;
 
 enumval_decl : IDENT ( '=' integer_constant )? ;
 
@@ -39,7 +34,7 @@ commasep_ident_with_opt_single_value : ident_with_opt_single_value ( ',' ident_w
 
 metadata : ( '(' commasep_ident_with_opt_single_value ')' )? ;
 
-// fix grammar: enum values (IDENT) are allowed as well
+// fix original grammar: enum values (IDENT) are allowed as well
 scalar : integer_constant | float_constant | IDENT ;
 
 object : '{' commasep_ident_with_value '}' ;
@@ -60,8 +55,6 @@ file_identifier_decl : 'file_identifier' string_constant ;
 
 ns_ident : ( IDENT '.' )? IDENT ;
 
-// Lexer rules
-
 string_constant : '"' .*? '"' ;
 
 BASE_TYPE_NAME : 'bool' | 'byte' | 'ubyte' | 'short' | 'ushort' | 'int' | 'uint' | 'float' | 'long' | 'ulong' | 'double' | 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'int64' | 'uint64' | 'float32' | 'float64' | 'string' ;
@@ -78,6 +71,7 @@ integer_constant : '-'? INT | 'true' | 'false' ;
 
 float_constant : '-'? INT '.' INT (('e'|'E') ('+'|'-')? INT )? ;
 
+// fixed original grammar: allow line comments
 COMMENT : '//' ~[\r\n]* -> channel(HIDDEN);
 
 WHITESPACE : [ \t\r\n] -> skip ;
