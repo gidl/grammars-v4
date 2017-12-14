@@ -1,6 +1,8 @@
 
 grammar FlatBuffers ;
 
+// Parser rules
+
 schema : include* ( namespace_decl | type_decl | enum_decl | root_decl | file_extension_decl | file_identifier_decl | attribute_decl | rpc_decl | object )* ;
 
 include : 'include' string_constant ';' ;
@@ -27,8 +29,6 @@ type : '[' base_type ']' | base_type ;
 
 base_type : BASE_TYPE_NAME | ns_ident ;
 
-BASE_TYPE_NAME : 'bool' | 'byte' | 'ubyte' | 'short' | 'ushort' | 'int' | 'uint' | 'float' | 'long' | 'ulong' | 'double' | 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'int64' | 'uint64' | 'float32' | 'float64' | 'string' ;
-
 enumval_decl : IDENT ( '=' integer_constant )? ;
 
 commasep_enumval_decl : enumval_decl ( ',' enumval_decl )* ;
@@ -39,8 +39,7 @@ commasep_ident_with_opt_single_value : ident_with_opt_single_value ( ',' ident_w
 
 metadata : ( '(' commasep_ident_with_opt_single_value ')' )? ;
 
-// fix grammar: enum values are allowed as well
-
+// fix grammar: enum values (IDENT) are allowed as well
 scalar : integer_constant | float_constant | IDENT ;
 
 object : '{' commasep_ident_with_value '}' ;
@@ -59,21 +58,25 @@ file_extension_decl : 'file_extension' string_constant ;
 
 file_identifier_decl : 'file_identifier' string_constant ;
 
+ns_ident : ( IDENT '.' )? IDENT ;
+
+// Lexer rules
+
+string_constant : '"' .*? '"' ;
+
+BASE_TYPE_NAME : 'bool' | 'byte' | 'ubyte' | 'short' | 'ushort' | 'int' | 'uint' | 'float' | 'long' | 'ulong' | 'double' | 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'int64' | 'uint64' | 'float32' | 'float64' | 'string' ;
+
+IDENT : LETTER_EXCL_DIGITS ( LETTER_INCL_DIGITS )* ;
+
 fragment LETTER_INCL_DIGITS : [a-zA-Z0-9_] ;
 
 fragment LETTER_EXCL_DIGITS : [a-zA-Z_] ;
 
 INT : [0-9]+ ;
 
-integer_constant : ('-')? INT | 'true' | 'false' ;
+integer_constant : '-'? INT | 'true' | 'false' ;
 
-float_constant : ('-')? INT '.' INT (('e'|'E') ('+'|'-')? INT )? ;
-
-string_constant : '"' .*? '"' ;
-
-ns_ident : ( IDENT '.' )? IDENT ;
-
-IDENT : LETTER_EXCL_DIGITS ( LETTER_INCL_DIGITS )* ;
+float_constant : '-'? INT '.' INT (('e'|'E') ('+'|'-')? INT )? ;
 
 COMMENT : '//' ~[\r\n]* -> channel(HIDDEN);
 
