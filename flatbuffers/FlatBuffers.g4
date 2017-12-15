@@ -1,6 +1,8 @@
 
 grammar FlatBuffers ;
 
+// Parser rules
+
 schema : include* ( namespace_decl | type_decl | enum_decl | root_decl | file_extension_decl | file_identifier_decl | attribute_decl | rpc_decl | object )* ;
 
 include : 'include' STRING_CONSTANT ';' ;
@@ -55,21 +57,19 @@ file_identifier_decl : 'file_identifier' STRING_CONSTANT ;
 
 ns_ident : ( IDENT '.' )? IDENT ;
 
-STRING_CONSTANT : '"' ~["\r\n]* '"' ;
+// Lexer rules
 
-// fixed original grammar: allow line comments
-COMMENT : '//' ~[\r\n]* -> channel(HIDDEN);
+STRING_CONSTANT : '"' ~["\r\n]* '"' ;
 
 BASE_TYPE_NAME : 'bool' | 'byte' | 'ubyte' | 'short' | 'ushort' | 'int' | 'uint' | 'float' | 'long' | 'ulong' | 'double' | 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'int64' | 'uint64' | 'float32' | 'float64' | 'string' ;
 
-IDENT : LETTER_EXCL_DIGITS ( LETTER_INCL_DIGITS )* ;
-
-fragment LETTER_INCL_DIGITS : [a-zA-Z0-9_] ;
-
-fragment LETTER_EXCL_DIGITS : [a-zA-Z_] ;
+IDENT : [a-zA-Z_] [a-zA-Z0-9_]* ;
 
 INTEGER_CONSTANT : '-'? [0-9]+ | 'true' | 'false' ;
 
 FLOAT_CONSTANT : '-'? [0-9]+ '.' [0-9]+ (('e'|'E') ('+'|'-')? [0-9]+ )? ;
+
+// fixed original grammar: allow line comments
+COMMENT : '//' ~[\r\n]* -> channel(HIDDEN);
 
 WHITESPACE : [ \t\r\n] -> skip ;
