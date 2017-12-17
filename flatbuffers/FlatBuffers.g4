@@ -11,7 +11,7 @@ namespace_decl : 'namespace' IDENT ( '.' IDENT )* ';' ;
 
 attribute_decl : 'attribute' STRING_CONSTANT ';' ;
 
-type_decl : ( 'table' | 'struct' ) IDENT metadata '{' ( field_decl )+ '}' ;
+type_decl : ( 'table' | 'struct' ) IDENT metadata '{' ( field_decl )* '}' ;
 
 enum_decl : ( 'enum' IDENT ( ':' type )? | 'union' IDENT ) metadata '{' commasep_enumval_decl '}' ;
 
@@ -26,9 +26,9 @@ rpc_method : IDENT '(' IDENT ')' ':' IDENT metadata ';' ;
 // fixed original grammar: allow namespaces for IDENTs
 type : '[' type ']' | BASE_TYPE_NAME | ns_ident ;
 
-enumval_decl : IDENT ( '=' INTEGER_CONSTANT )? ;
+enumval_decl : ns_ident ( '=' INTEGER_CONSTANT )? ;
 
-commasep_enumval_decl : enumval_decl ( ',' enumval_decl )* ;
+commasep_enumval_decl : enumval_decl ( ',' enumval_decl )* ','? ;
 
 ident_with_opt_single_value : IDENT ( ':' single_value )? ;
 
@@ -43,19 +43,19 @@ object : '{' commasep_ident_with_value '}' ;
 
 ident_with_value : IDENT ':' value ;
 
-commasep_ident_with_value : ident_with_value ( ',' ident_with_value )* ;
+commasep_ident_with_value : ident_with_value ( ',' ident_with_value )* ','? ;
 
 single_value : scalar | STRING_CONSTANT ;
 
 value : single_value | object | '[' commasep_value ']' ;
 
-commasep_value : value( ',' value )* ;
+commasep_value : value( ',' value )* ','? ;
 
 file_extension_decl : 'file_extension' STRING_CONSTANT ;
 
 file_identifier_decl : 'file_identifier' STRING_CONSTANT ;
 
-ns_ident : ( IDENT '.' )? IDENT ;
+ns_ident : IDENT ( '.' IDENT )* ;
 
 // Lexer rules
 
