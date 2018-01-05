@@ -153,7 +153,7 @@ HEX_INTEGER
     ;
 
 DOUBLE
-    : ('+' | '-')? DIGIT+ ('.' DIGIT+)? (('E' | 'e') INTEGER)?
+    : ('+' | '-')? ( DIGIT+ '.' DIGIT+ | '.' DIGIT+ ) (('E' | 'e') INTEGER)?
     ;
 
 const_list
@@ -214,9 +214,9 @@ WS
     ;
 
 SL_COMMENT
-    : ('//' | '#') (~'\n')* -> channel(HIDDEN)
+    : ('//' | '#') (~'\n')* ('\r')? '\n' -> channel(HIDDEN)
     ;
 
 ML_COMMENT
-    : '/*' (~'*')* '*/' -> channel(HIDDEN)
+    : '/*' .*? '*/' -> channel(HIDDEN)
     ;
