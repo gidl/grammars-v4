@@ -29,7 +29,7 @@ definition
     ;
 
 const_rule
-    : 'const' field_type IDENTIFIER '=' const_value list_separator?
+    : 'const' field_type IDENTIFIER ( '=' const_value )? list_separator?
     ;
 
 typedef
@@ -149,11 +149,11 @@ INTEGER
     ;
 
 HEX_INTEGER
-    : '0x' HEX_DIGIT+
+    : '-'? '0x' HEX_DIGIT+
     ;
 
 DOUBLE
-    : ('+' | '-')? ( DIGIT+ '.' DIGIT+ | '.' DIGIT+ ) (('E' | 'e') INTEGER)?
+    : ('+' | '-')? ( DIGIT+ ('.' DIGIT+)? | '.' DIGIT+ ) (('E' | 'e') INTEGER)?
     ;
 
 const_list
