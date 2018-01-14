@@ -13,3 +13,4 @@
 .idea/
 *.iml
 /**/gen
+/thrift/testresult.txt
