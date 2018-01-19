@@ -4,7 +4,7 @@ grammar CapnProto;
 // parser rules
 
 document :
-	file_id using namespace struct* EOF	;
+	file_id using namespace struct_def* EOF	;
 	
 file_id :
 	'@' HEX_NUMBER ';' ;
@@ -15,29 +15,32 @@ using :
 namespace :
 	'$' NAME '.namespace(' TEXT ')' ';' ;
 	
-struct :
-	'struct' NAME '{' declaration* '}' ;
+struct_def :
+	'struct' NAME '{' struct_decl* '}' ;
 
-declaration	: 
-	field_decl | unnamed_enum | named_enum  | const_decl ;
+struct_decl	: 
+	const_def | field | enum_def | named_union | unnamed_union | struct_def ;
 
-named_enum :
+enum_def :
 	'enum' NAME '{' enum_decl* '}' ;
+
+named_union :
+	NAME ':union' '{' field* '}' ;
 	
-unnamed_enum :
-	'enum' '{' enum_decl* '}' ;
+unnamed_union :
+	'union' '{' field* '}' ;
 
 type :
 	':' type_name param_list? ';' ;
 	
-field_decl :	
+field :	
 	NAME '@' INTEGER type ';' ;
 	
-const_decl :
+const_def :
 	'const' NAME '=' TEXT ;
 
 enum_decl :
-	NAME LOCATION ';' ;
+	NAME '@' INTEGER ';' ;
 	
 type_name : 
 	BASE_TYPE_NAME | NAME ;
@@ -50,22 +53,22 @@ param_list :
 	
 BASE_TYPE_NAME : 'Void' | 'UInt32' | 'Text' | 'List' ;
 
-TEXT : '"' ~["]*? '"' ;
+// fragment LETTER : 'A'..'Z' | 'a'..'z' ;
 
-FLOAT : DIGIT+ ( '.' DIGIT+ )? ;
-
-INTEGER : DIGIT+ ;
-
-NAME : LETTER ( LETTER | DIGIT )* ;
-
-HEX_NUMBER : '0x' HEX_DIGIT+ ;
-
-fragment LETTER : 'A'..'Z' | 'a'..'z' ;
-
-fragment DIGIT : '0'..'9' ;
+fragment DIGIT : [0-9] ;
 
 fragment HEX_DIGIT : DIGIT | 'A'..'F' | 'a'..'f' ;
 
-COMMENT : '#' ~[\n]*? -> channel(HIDDEN) ;
+COMMENT : '#' ~[\n]* -> channel(HIDDEN) ;
 
 WHITESPACE : [ \t\r\n] -> skip ;
+
+TEXT : '"' ~["]*? '"' ;
+
+NAME : [a-zA-Z] [a-zA-Z0-9]* ;
+
+INTEGER : DIGIT+ ;
+
+FLOAT : DIGIT+ ( '.' DIGIT+ )? ;
+
+HEX_NUMBER : '0x' HEX_DIGIT+ ;
