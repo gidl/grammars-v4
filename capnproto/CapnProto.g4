@@ -4,10 +4,7 @@ grammar CapnProto;
 // parser rules
 
 document :
-	file_id using namespace struct_def* EOF	;
-	
-file_id :
-	'@' HEX_NUMBER ';' ;
+	FILE_ID using namespace struct_def* EOF	;
 
 using :
 	'using' NAME '=' 'import' TEXT ';' ;
@@ -16,32 +13,29 @@ namespace :
 	'$' NAME '.namespace(' TEXT ')' ';' ;
 	
 struct_def :
-	'struct' NAME '{' struct_decl* '}' ;
+	'struct' NAME '{' struct_content* '}' ;
 
-struct_decl	: 
-	const_def | field | enum_def | named_union | unnamed_union | struct_def ;
+struct_content : 
+	field_def | enum_def | named_union_def | unnamed_union_def | struct_def ;
 
 enum_def :
-	'enum' NAME '{' enum_decl* '}' ;
-
-named_union :
-	NAME ':union' '{' field* '}' ;
+	'enum' NAME '{' enum_content* '}' ;
 	
-unnamed_union :
-	'union' '{' field* '}' ;
+unnamed_union_def :
+	'union' '{' field_def* '}' ;
 
 type :
 	':' type_name param_list? ';' ;
-	
-field :	
+
+field_def :	
 	NAME '@' INTEGER type ';' ;
 	
-const_def :
-	'const' NAME '=' TEXT ;
-
-enum_decl :
+enum_content :
 	NAME '@' INTEGER ';' ;
 	
+named_union_def :
+	NAME ':union' '{' field_def* '}' ;
+
 type_name : 
 	BASE_TYPE_NAME | NAME ;
 
@@ -71,4 +65,4 @@ INTEGER : DIGIT+ ;
 
 FLOAT : DIGIT+ ( '.' DIGIT+ )? ;
 
-HEX_NUMBER : '0x' HEX_DIGIT+ ;
+FILE_ID : '@0x' HEX_DIGIT+ ;
