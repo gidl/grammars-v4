@@ -476,8 +476,8 @@ struct TestNewVersion {
 
 struct TestStructUnion {
   un @0! :union {
-    struct @1 :SomeStruct;
-    object @2 :TestAnyPointer;
+    str2uct @1 :SomeStruct;
+    object  @2 :TestAnyPointer;
   }
 
   struct SomeStruct {
@@ -664,7 +664,7 @@ interface TestTailCaller {
 interface TestKeywordMethods {
   delete @0 ();
   class @1 ();
-  void @2 ();
+  vo2id @2 ();
   return @3 ();
 }
 

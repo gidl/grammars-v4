@@ -33,7 +33,7 @@ interface_content :
 	field_def | enum_def | named_union_def | unnamed_union_def | struct_def | function_def | interface_def ;
 
 field_def :	
-	( NAME | 'struct' ) LOCATOR ':' type ( '=' const_value )? ';' ;
+	NAME LOCATOR ':' type ( '=' const_value )? ';' ;
 
 type :
 	NAME 
@@ -68,7 +68,7 @@ group_content :
 	field_def | unnamed_union_def | named_union_def ;
 	
 function_def :
-	( NAME | 'void' ) LOCATOR function_parameters
+	NAME LOCATOR function_parameters
 	( '->' ( function_parameters | type ) )?	
 	';' ;
 
