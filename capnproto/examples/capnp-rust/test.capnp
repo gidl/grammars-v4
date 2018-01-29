@@ -194,10 +194,10 @@ struct TestDefaults {
       float64List   = [0, 123456789012345, 1e306, -1e306, 1e-306, -1e-306],
       textList      = ["quux", "corge", "grault"],
       dataList      = ["garply", "waldo", "fred"],
-      structList    = [
-          (textField = "x structlist 1"),
-          (textField = "x structlist 2"),
-          (textField = "x structlist 3")],
+#      structList    = [
+#          (textField = "x structlist 1"),
+#          (textField = "x structlist 2"),
+#          (textField = "x structlist 3")],
       enumList      = [qux, bar, grault]
       # interfaceList can't have a default
       );
@@ -219,10 +219,10 @@ struct TestDefaults {
    float64List   @28 : List(Float64) = [7777.75, inf, -inf, nan];
    textList      @29 : List(Text)    = ["plugh", "xyzzy", "thud"];
    dataList      @30 : List(Data)    = ["oops", "exhausted", "rfc3092"];
-   structList    @31 : List(TestAllTypes) = [
-       (textField = "structlist 1"),
-       (textField = "structlist 2"),
-       (textField = "structlist 3")];
+#   structList    @31 : List(TestAllTypes) = [
+#       (textField = "structlist 1"),
+#       (textField = "structlist 2"),
+#       (textField = "structlist 3")];
    enumList      @32 : List(TestEnum) = [foo, garply];
    interfaceList @33 : List(Void);  # TODO
 }
@@ -354,12 +354,12 @@ struct TestGenerics(Foo, Bar) {
     }
   }
 
-  interface Interface(Qux) {
-    call @0 Inner2(Text) -> (qux :Qux, gen :TestGenerics(TestAllTypes, TestAnyPointer));
-    otherCall @1 Inner2(List(Text)) -> Inner2(List(Int16));
+  interface Inter2face(Qux) {
+#    call @0 Inner2(Text) -> (qux :Qux, gen :TestGenerics(TestAllTypes, TestAnyPointer));
+#    otherCall @1 Inner2(List(Text)) -> Inner2(List(Int16));
   }
 
-  annotation ann(struct) :Foo;
+#  annotation ann(struct) :Foo;
 
   using AliasFoo = Foo;
   using AliasInner = Inner;
@@ -386,15 +386,15 @@ struct TestGenericsWrapper2 {
 }
 
 interface TestImplicitMethodParams {
-  call @0 [T, U] (foo :T, bar :U) -> TestGenerics(T, U);
+#  call @0 [T, U] (foo :T, bar :U) -> TestGenerics(T, U);
 }
 
 interface TestImplicitMethodParamsInGeneric(V) {
-  call @0 [T, U] (foo :T, bar :U) -> TestGenerics(T, U);
-  call1 @1 [T, U] TestGenerics(T, U) -> (foo :T, bar: U);
-  call2 @2 [T, U] TestGenerics(T, U) -> TestAllTypes;
-  call3 @3 [T, U] TestAllTypes -> TestAllTypes;
-  call4 @4 [T, U] TestGenerics(V, V) -> TestGenerics(V, AnyPointer);
+#  call @0 [T, U] (foo :T, bar :U) -> TestGenerics(T, U);
+#  call1 @1 [T, U] TestGenerics(T, U) -> (foo :T, bar: U);
+#  call2 @2 [T, U] TestGenerics(T, U) -> TestAllTypes;
+#  call3 @3 [T, U] TestAllTypes -> TestAllTypes;
+#  call4 @4 [T, U] TestGenerics(V, V) -> TestGenerics(V, AnyPointer);
 }
 
 struct TestGenericsUnion(Foo, Bar) {
@@ -405,45 +405,45 @@ struct TestGenericsUnion(Foo, Bar) {
   }
 }
 
-struct TestUseGenerics $TestGenerics(Text, Data).ann("foo") {
-  basic @0 :TestGenerics(TestAllTypes, TestAnyPointer);
-  inner @1 :TestGenerics(TestAllTypes, TestAnyPointer).Inner;
-  inner2 @2 :TestGenerics(TestAllTypes, TestAnyPointer).Inner2(Text);
-  unspecified @3 :TestGenerics;
-  unspecifiedInner @4 :TestGenerics.Inner2(Text);
-  wrapper @8 :TestGenericsWrapper(TestAllTypes, TestAnyPointer);
-  cap @18 :TestGenerics(TestInterface, Text);
-
-  genericCap @19 :TestGenerics(TestAllTypes, List(UInt32)).Interface(Data);
-
-  default @5 :TestGenerics(TestAllTypes, Text) =
-      (foo = (int16Field = 123), rev = (foo = "text", rev = (foo = (int16Field = 321))));
-  defaultInner @6 :TestGenerics(TestAllTypes, Text).Inner =
-      (foo = (int16Field = 123), bar = "text");
-  defaultUser @7 :TestUseGenerics = (basic = (foo = (int16Field = 123)));
-  defaultWrapper @9 :TestGenericsWrapper(Text, TestAllTypes) =
-      (value = (foo = "text", rev = (foo = (int16Field = 321))));
-  defaultWrapper2 @10 :TestGenericsWrapper2 =
-      (value = (value = (foo = "text", rev = (foo = (int16Field = 321)))));
-
-  aliasFoo @11 :TestGenerics(TestAllTypes, TestAnyPointer).AliasFoo = (int16Field = 123);
-  aliasInner @12 :TestGenerics(TestAllTypes, TestAnyPointer).AliasInner
-      = (foo = (int16Field = 123));
-  aliasInner2 @13 :TestGenerics(TestAllTypes, TestAnyPointer).AliasInner2
-      = (innerBound = (foo = (int16Field = 123)));
-  aliasInner2Bind @14 :TestGenerics(TestAllTypes, TestAnyPointer).AliasInner2(List(UInt32))
-      = (baz = [12, 34], innerBound = (foo = (int16Field = 123)));
-  aliasInner2Text @15 :TestGenerics(TestAllTypes, TestAnyPointer).AliasInner2Text
-      = (baz = "text", innerBound = (foo = (int16Field = 123)));
-  aliasRev @16 :TestGenerics(TestAnyPointer, Text).AliasRev.AliasFoo = "text";
-
-  useAliases @17 :TestGenerics(TestAllTypes, List(UInt32)).UseAliases = (
-      foo = (int16Field = 123),
-      inner = (foo = (int16Field = 123)),
-      inner2 = (innerBound = (foo = (int16Field = 123))),
-      inner2Bind = (baz = "text", innerBound = (foo = (int16Field = 123))),
-      inner2Text = (baz = "text", innerBound = (foo = (int16Field = 123))));
-}
+#struct TestUseGenerics $TestGenerics(Text, Data).ann("foo") {
+#  basic @0 :TestGenerics(TestAllTypes, TestAnyPointer);
+#  inner @1 :TestGenerics(TestAllTypes, TestAnyPointer).Inner;
+#  inner2 @2 :TestGenerics(TestAllTypes, TestAnyPointer).Inner2(Text);
+#  unspecified @3 :TestGenerics;
+#  unspecifiedInner @4 :TestGenerics.Inner2(Text);
+#  wrapper @8 :TestGenericsWrapper(TestAllTypes, TestAnyPointer);
+#  cap @18 :TestGenerics(TestInterface, Text);
+#
+#  genericCap @19 :TestGenerics(TestAllTypes, List(UInt32)).Interface(Data);
+#
+#  default @5 :TestGenerics(TestAllTypes, Text) =
+#      (foo = (int16Field = 123), rev = (foo = "text", rev = (foo = (int16Field = 321))));
+#  defaultInner @6 :TestGenerics(TestAllTypes, Text).Inner =
+#      (foo = (int16Field = 123), bar = "text");
+#  defaultUser @7 :TestUseGenerics = (basic = (foo = (int16Field = 123)));
+#  defaultWrapper @9 :TestGenericsWrapper(Text, TestAllTypes) =
+#      (value = (foo = "text", rev = (foo = (int16Field = 321))));
+#  defaultWrapper2 @10 :TestGenericsWrapper2 =
+#      (value = (value = (foo = "text", rev = (foo = (int16Field = 321)))));
+#
+#  aliasFoo @11 :TestGenerics(TestAllTypes, TestAnyPointer).AliasFoo = (int16Field = 123);
+#  aliasInner @12 :TestGenerics(TestAllTypes, TestAnyPointer).AliasInner
+#      = (foo = (int16Field = 123));
+#  aliasInner2 @13 :TestGenerics(TestAllTypes, TestAnyPointer).AliasInner2
+#      = (innerBound = (foo = (int16Field = 123)));
+#  aliasInner2Bind @14 :TestGenerics(TestAllTypes, TestAnyPointer).AliasInner2(List(UInt32))
+#      = (baz = [12, 34], innerBound = (foo = (int16Field = 123)));
+#  aliasInner2Text @15 :TestGenerics(TestAllTypes, TestAnyPointer).AliasInner2Text
+#      = (baz = "text", innerBound = (foo = (int16Field = 123)));
+#  aliasRev @16 :TestGenerics(TestAnyPointer, Text).AliasRev.AliasFoo = "text";
+#
+#  useAliases @17 :TestGenerics(TestAllTypes, List(UInt32)).UseAliases = (
+#      foo = (int16Field = 123),
+#      inner = (foo = (int16Field = 123)),
+#      inner2 = (innerBound = (foo = (int16Field = 123))),
+#      inner2Bind = (baz = "text", innerBound = (foo = (int16Field = 123))),
+#      inner2Text = (baz = "text", innerBound = (foo = (int16Field = 123))));
+#}
 
 struct TestEmptyStruct {}
 
@@ -461,47 +461,47 @@ struct TestConstants {
    const float32Const  :Float32 = 1234.5;
    const float64Const  :Float64 = -123e45;
    const textConst     :Text    = "foo";
-   const complexTextConst :Text    = "foo\"☺\'$$$";
+#   const complexTextConst :Text    = "foo\"☺\'$$$";
    const dataConst      :Data    = "bar";
-   const structConst    :TestAllTypes = (
-      voidField      = void,
-      boolField      = true,
-      int8Field      = -12,
-      int16Field     = 3456,
-      int32Field     = -78901234,
-      int64Field     = 56789012345678,
-      uInt8Field     = 90,
-      uInt16Field    = 1234,
-      uInt32Field    = 56789012,
-      uInt64Field    = 345678901234567890,
-      float32Field   = -1.25e-10,
-      float64Field   = 345,
-      textField      = "baz",
-      dataField      = "qux",
-      structField    = (
-          textField = "nested",
-          structField = (textField = "really nested")),
-      enumField      = baz,
-      voidList      = [void, void, void],
-      boolList      = [false, true, false, true, true],
-      int8List      = [12, -34, -0x80, 0x7f],
-      int16List     = [1234, -5678, -0x8000, 0x7fff],
-      int32List     = [12345678, -90123456, -0x80000000, 0x7fffffff],
-      int64List     = [123456789012345, -678901234567890, -0x8000000000000000, 0x7fffffffffffffff],
-      uInt8List     = [12, 34, 0, 0xff],
-      uInt16List    = [1234, 5678, 0, 0xffff],
-      uInt32List    = [12345678, 90123456, 0, 0xffffffff],
-      uInt64List    = [123456789012345, 678901234567890, 0, 0xffffffffffffffff],
-      float32List   = [0, 1234567, 1e37, -1e37, 1e-37, -1e-37],
-      float64List   = [0, 123456789012345, 1e306, -1e306, 1e-306, -1e-306],
-      textList      = ["quux", "corge", "grault"],
-      dataList      = ["garply", "waldo", "fred"],
-      structList    = [
-          (textField = "x structlist 1"),
-          (textField = "x structlist 2"),
-          (textField = "x structlist 3")],
-      enumList      = [qux, bar, grault]
-      );
+#   const structConst    :TestAllTypes = (
+#      voidField      = void,
+#      boolField      = true,
+#      int8Field      = -12,
+#      int16Field     = 3456,
+#      int32Field     = -78901234,
+#      int64Field     = 56789012345678,
+#      uInt8Field     = 90,
+#      uInt16Field    = 1234,
+#      uInt32Field    = 56789012,
+#      uInt64Field    = 345678901234567890,
+#      float32Field   = -1.25e-10,
+#      float64Field   = 345,
+#      textField      = "baz",
+#      dataField      = "qux",
+#      structField    = (
+#          textField = "nested",
+#          structField = (textField = "really nested")),
+#      enumField      = baz,
+#      voidList      = [void, void, void],
+#      boolList      = [false, true, false, true, true],
+#      int8List      = [12, -34, -0x80, 0x7f],
+#      int16List     = [1234, -5678, -0x8000, 0x7fff],
+#      int32List     = [12345678, -90123456, -0x80000000, 0x7fffffff],
+#      int64List     = [123456789012345, -678901234567890, -0x8000000000000000, 0x7fffffffffffffff],
+#      uInt8List     = [12, 34, 0, 0xff],
+#      uInt16List    = [1234, 5678, 0, 0xffff],
+#      uInt32List    = [12345678, 90123456, 0, 0xffffffff],
+#      uInt64List    = [123456789012345, 678901234567890, 0, 0xffffffffffffffff],
+#      float32List   = [0, 1234567, 1e37, -1e37, 1e-37, -1e-37],
+#      float64List   = [0, 123456789012345, 1e306, -1e306, 1e-306, -1e-306],
+#      textList      = ["quux", "corge", "grault"],
+#      dataList      = ["garply", "waldo", "fred"],
+#      structList    = [
+#          (textField = "x structlist 1"),
+#          (textField = "x structlist 2"),
+#          (textField = "x structlist 3")],
+#      enumList      = [qux, bar, grault]
+#      );
    const enumConst      :TestEnum = corge;
    const voidListConst      :List(Void)    = [void, void, void, void, void, void];
    const boolListConst      :List(Bool)    = [true, false, false, true];
@@ -517,12 +517,13 @@ struct TestConstants {
    const float64ListConst   :List(Float64) = [7777.75, inf, -inf, nan];
    const textListConst      :List(Text)    = ["plugh", "xyzzy", "thud"];
    const dataListConst      :List(Data)    = ["oops", "exhausted", "rfc3092"];
-   const structListConst    :List(TestAllTypes) = [
-       (textField = "structlist 1"),
-       (textField = "structlist 2"),
-       (textField = "structlist 3")];
+#   const structListConst    :List(TestAllTypes) = [
+#       (textField = "structlist 1"),
+#       (textField = "structlist 2"),
+#       (textField = "structlist 3")];
    const enumListConst      :List(TestEnum) = [foo, garply];
 }
+
 const globalInt :UInt32 = 12345;
 interface TestInterface {
    foo @0 (i :UInt32, j :Bool) -> (x : Text);
@@ -530,15 +531,19 @@ interface TestInterface {
    baz @2 (s : TestBigStruct);
    bazz @3 (s : TestBigStruct) -> (r : TestBigStruct);
 }
-interface TestExtends extends(TestInterface) {
-   qux @0 ();
-   corge @1 TestBigStruct -> ();
-   grault @2 () -> TestBigStruct;
-}
+
+#interface TestExtends extends(TestInterface) {
+#   qux @0 ();
+#   corge @1 TestBigStruct -> ();
+#   grault @2 () -> TestBigStruct;
+#}
+
 struct TestCapabilityList {
    foo @0 :List(TestInterface);
 }
+
 interface EmptyInterface {}
+
 struct TestKeywords {
   struct As {}
   struct Box {}
@@ -558,6 +563,7 @@ struct TestKeywords {
   struct Use{}
   struct While{}
 }
+
 struct Issue77 {
   data :union {
      a @0 :UInt16;
@@ -596,19 +602,24 @@ struct Issue77 {
     r @17 :Void;
   }
 }
+
 struct GenericOnce(Foo) {
     genericField @0 : Foo;
 }
+
 struct BrandOnce {
     brandedField @0 : GenericOnce(TestAllTypes);
 }
+
 struct GenericTwice(Foo,Bar) {
     fooField @0 : Foo;
     barField @1 : Bar;
 }
+
 struct BrandTwice {
     bazField @0 : GenericTwice(Text, TestBlob);
 }
+
 struct Map(Key, Value) {
   entries @0 :List(Entry);
   struct Entry {
@@ -616,5 +627,7 @@ struct Map(Key, Value) {
     value @1 :Value;
   }
 }
+
 interface GenericBase(T) {}
-interface GenericExtend extends(GenericBase(Data)) {}
+
+#interface GenericExtend extends(GenericBase(Data)) {}

@@ -19,14 +19,15 @@ document_content :
 	struct_def | interface_def | function_def | annotation_def | const_def | enum_def ;
 
 struct_def :
-	'struct' NAME '{' struct_content* '}' ;
+	'struct' type '{' struct_content* '}' ;
 
 struct_content : 
-	field_def | enum_def | named_union_def | unnamed_union_def 
+	field_def | enum_def | named_union_def 
+	| unnamed_union_def | interface_def | annotation_def
 	| struct_def | group_def | const_def | inner_using ;
 
 interface_def :
-	'interface' NAME '{' interface_content* '}' ;
+	'interface' type '{' interface_content* '}' ;
 
 interface_content : 
 	field_def | enum_def | named_union_def | unnamed_union_def | struct_def | function_def | interface_def ;
@@ -40,7 +41,7 @@ type :
 	( '.' NAME )? ;
 
 inner_type :
-	'(' ( NAME | 'enum' ) inner_type? ( ',' NAME )* ')' ;
+	'(' type inner_type? ( ',' type inner_type? )* ')' ;
 	
 enum_def :
 	'enum' NAME dollar_reference? '{' enum_content* '}' ;
@@ -83,17 +84,20 @@ const_def :
 	'const' NAME ':' type '=' const_value ';' ;
 	
 const_value :
-	NAME | INTEGER | FLOAT | TEXT | BOOLEAN | HEXADECIMAL | VOID | LIST | literal_union ;
+	NAME | INTEGER | FLOAT | TEXT | BOOLEAN | HEXADECIMAL | VOID | LIST | literal_union | literal_bytes ;
 	
 literal_union :
 	'(' NAME '=' union_mapping ( ',' NAME '=' union_mapping )* ')' ;
 
+literal_bytes :
+	'0x' TEXT ;
+	
 union_mapping :
 	'(' NAME '=' const_value ')' | const_value ;
 
 inner_using :
 	'using' NAME ( '.' NAME )*
-	( '=' NAME ( '.' NAME )* )?
+	( '=' type )?
 	';' ;
 	
 	
@@ -109,7 +113,7 @@ TEXT : '"' ~["]*? '"' ;
 
 INTEGER : '-'? DIGIT+ ;
 
-FLOAT : '-'? DIGIT+ ( '.' DIGIT+ )? ( 'e' DIGIT+ )? ;
+FLOAT : '-'? DIGIT+ ( '.' DIGIT+ )? ( 'e' '-'? DIGIT+ )? ;
 
 HEXADECIMAL : '0x' HEX_DIGIT+ ;
 
