@@ -84,10 +84,13 @@ const_def :
 	'const' NAME ':' type '=' const_value ';' ;
 	
 const_value :
-	NAME | INTEGER | FLOAT | TEXT | BOOLEAN | HEXADECIMAL | VOID | LIST | literal_union | literal_bytes ;
+	'-'? NAME | INTEGER | FLOAT | TEXT | BOOLEAN | HEXADECIMAL | VOID | literal_list | literal_union | literal_bytes ;
 	
 literal_union :
 	'(' NAME '=' union_mapping ( ',' NAME '=' union_mapping )* ')' ;
+
+literal_list :
+	'[' const_value ( ',' const_value )* ']' ;
 
 literal_bytes :
 	'0x' TEXT ;
@@ -115,15 +118,13 @@ INTEGER : '-'? DIGIT+ ;
 
 FLOAT : '-'? DIGIT+ ( '.' DIGIT+ )? ( 'e' '-'? DIGIT+ )? ;
 
-HEXADECIMAL : '0x' HEX_DIGIT+ ;
+HEXADECIMAL : '-'? '0x' HEX_DIGIT+ ;
 
 FILE_ID : '@' HEXADECIMAL ;
 
 BOOLEAN : 'true' | 'false' ;
 
 VOID : 'void' ;
-
-LIST : '[' ~[\]]*? ']' ;
 
 NAME : [a-zA-Z] [a-zA-Z0-9]* ;
 
