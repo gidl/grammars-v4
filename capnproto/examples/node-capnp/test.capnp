@@ -93,48 +93,48 @@ struct TestDefaults {
   float64Field   @11 : Float64 = -123e45;
   textField      @12 : Text    = "foo";
   dataField      @13 : Data    = "bar";
-#  structField    @14 : TestAllTypes = (
-#      voidField      = void,
-#      boolField      = true,
-#      int8Field      = -12,
-#      int16Field     = 3456,
-#      int32Field     = -78901234,
-#      int64Field     = 56789012345678,
-#      uInt8Field     = 90,
-#      uInt16Field    = 1234,
-#      uInt32Field    = 56789012,
-#      uInt64Field    = 345678901234567890,
-#      float32Field   = -1.25e-10,
-#      float64Field   = 345,
-#      textField      = "baz",
-#      dataField      = "qux",
-#      structField    = (
-#          textField = "nested",
-#          structField = (textField = "really nested")),
-#      enumField      = baz,
-#      # interfaceField can't have a default
-#
-#      voidList      = [void, void, void],
-#      boolList      = [false, true, false, true, true],
-#      int8List      = [12, -34, -0x80, 0x7f],
-#      int16List     = [1234, -5678, -0x8000, 0x7fff],
-#      int32List     = [12345678, -90123456, -0x80000000, 0x7fffffff],
-#      int64List     = [123456789012345, -678901234567890, -0x8000000000000000, 0x7fffffffffffffff],
-#      uInt8List     = [12, 34, 0, 0xff],
-#      uInt16List    = [1234, 5678, 0, 0xffff],
-#      uInt32List    = [12345678, 90123456, 0, 0xffffffff],
-#      uInt64List    = [123456789012345, 678901234567890, 0, 0xffffffffffffffff],
-#      float32List   = [0, 1234567, 1e37, -1e37, 1e-37, -1e-37],
-#      float64List   = [0, 123456789012345, 1e306, -1e306, 1e-306, -1e-306],
-#      textList      = ["quux", "corge", "grault"],
-#      dataList      = ["garply", "waldo", "fred"],
-#      structList    = [
-#          (textField = "x structlist 1"),
-#          (textField = "x structlist 2"),
-#          (textField = "x structlist 3")],
-#      enumList      = [qux, bar, grault]
-#      # interfaceList can't have a default
-#      );
+  structField    @14 : TestAllTypes = (
+      voidField      = void,
+      boolField      = true,
+      int8Field      = -12,
+      int16Field     = 3456,
+      int32Field     = -78901234,
+      int64Field     = 56789012345678,
+      uInt8Field     = 90,
+      uInt16Field    = 1234,
+      uInt32Field    = 56789012,
+      uInt64Field    = 345678901234567890,
+      float32Field   = -1.25e-10,
+      float64Field   = 345,
+      textField      = "baz",
+      dataField      = "qux",
+      structField    = (
+          textField = "nested",
+          structField = (textField = "really nested")),
+      enumField      = baz,
+      # interfaceField can't have a default
+
+      voidList      = [void, void, void],
+      boolList      = [false, true, false, true, true],
+      int8List      = [12, -34, -0x80, 0x7f],
+      int16List     = [1234, -5678, -0x8000, 0x7fff],
+      int32List     = [12345678, -90123456, -0x80000000, 0x7fffffff],
+      int64List     = [123456789012345, -678901234567890, -0x8000000000000000, 0x7fffffffffffffff],
+      uInt8List     = [12, 34, 0, 0xff],
+      uInt16List    = [1234, 5678, 0, 0xffff],
+      uInt32List    = [12345678, 90123456, 0, 0xffffffff],
+      uInt64List    = [123456789012345, 678901234567890, 0, 0xffffffffffffffff],
+      float32List   = [0, 1234567, 1e37, -1e37, 1e-37, -1e-37],
+      float64List   = [0, 123456789012345, 1e306, -1e306, 1e-306, -1e-306],
+      textList      = ["quux", "corge", "grault"],
+      dataList      = ["garply", "waldo", "fred"],
+      structList    = [
+          (textField = "x structlist 1"),
+          (textField = "x structlist 2"),
+          (textField = "x structlist 3")],
+      enumList      = [qux, bar, grault]
+      # interfaceList can't have a default
+      );
   enumField      @15 : TestEnum = corge;
   interfaceField @16 : Void;  # TODO
 
@@ -423,19 +423,19 @@ struct TestFieldZeroIsBit {
   thirdField @2 :UInt8 = 123;
 }
 
-# struct TestListDefaults {
-#  lists @0 :TestLists = (
-#      list0  = [(f = void), (f = void)],
-#      list1  = [(f = true), (f = false), (f = true), (f = true)],
-#      list8  = [(f = 123), (f = 45)],
-#      list16 = [(f = 12345), (f = 6789)],
-#      list32 = [(f = 123456789), (f = 234567890)],
-#      list64 = [(f = 1234567890123456), (f = 2345678901234567)],
-#      listP  = [(f = "foo"), (f = "bar")],
-#      int32ListList = [[1, 2, 3], [4, 5], [12341234]],
-#      textListList = [["foo", "bar"], ["baz"], ["qux", "corge"]],
-#      structListList = [[(int32Field = 123), (int32Field = 456)], [(int32Field = 789)]]);
-# }
+struct TestListDefaults {
+  lists @0 :TestLists = (
+      list0  = [(f = void), (f = void)],
+      list1  = [(f = true), (f = false), (f = true), (f = true)],
+      list8  = [(f = 123), (f = 45)],
+      list16 = [(f = 12345), (f = 6789)],
+      list32 = [(f = 123456789), (f = 234567890)],
+      list64 = [(f = 1234567890123456), (f = 2345678901234567)],
+      listP  = [(f = "foo"), (f = "bar")],
+      int32ListList = [[1, 2, 3], [4, 5], [12341234]],
+      textListList = [["foo", "bar"], ["baz"], ["qux", "corge"]],
+      structListList = [[(int32Field = 123), (int32Field = 456)], [(int32Field = 789)]]);
+}
 
 struct TestLateUnion {
   # Test what happens if the unions are not the first ordinals in the struct.  At one point this
@@ -513,48 +513,48 @@ struct TestConstants {
   const float64Const   :Float64 = -123e45;
   const textConst      :Text    = "foo";
   const dataConst      :Data    = "bar";
-#  const structConst    :TestAllTypes = (
-#      voidField      = void,
-#      boolField      = true,
-#      int8Field      = -12,
-#      int16Field     = 3456,
-#      int32Field     = -78901234,
-#      int64Field     = 56789012345678,
-#      uInt8Field     = 90,
-#      uInt16Field    = 1234,
-#      uInt32Field    = 56789012,
-#      uInt64Field    = 345678901234567890,
-#      float32Field   = -1.25e-10,
-#      float64Field   = 345,
-#      textField      = "baz",
-#      dataField      = "qux",
-#      structField    = (
-#          textField = "nested",
-#          structField = (textField = "really nested")),
-#      enumField      = baz,
-#      # interfaceField can't have a default
-# 
-#      voidList      = [void, void, void],
-#      boolList      = [false, true, false, true, true],
-#      int8List      = [12, -34, -0x80, 0x7f],
-#      int16List     = [1234, -5678, -0x8000, 0x7fff],
-#      int32List     = [12345678, -90123456, -0x80000000, 0x7fffffff],
-#      int64List     = [123456789012345, -678901234567890, -0x8000000000000000, 0x7fffffffffffffff],
-#      uInt8List     = [12, 34, 0, 0xff],
-#      uInt16List    = [1234, 5678, 0, 0xffff],
-#      uInt32List    = [12345678, 90123456, 0, 0xffffffff],
-#      uInt64List    = [123456789012345, 678901234567890, 0, 0xffffffffffffffff],
-#      float32List   = [0, 1234567, 1e37, -1e37, 1e-37, -1e-37],
-#      float64List   = [0, 123456789012345, 1e306, -1e306, 1e-306, -1e-306],
-#      textList      = ["quux", "corge", "grault"],
-#      dataList      = ["garply", "waldo", "fred"],
-#      structList    = [
-#          (textField = "x structlist 1"),
-#          (textField = "x structlist 2"),
-#          (textField = "x structlist 3")],
-#      enumList      = [qux, bar, grault]
-#      # interfaceList can't have a default
-#      );
+  const structConst    :TestAllTypes = (
+      voidField      = void,
+      boolField      = true,
+      int8Field      = -12,
+      int16Field     = 3456,
+      int32Field     = -78901234,
+      int64Field     = 56789012345678,
+      uInt8Field     = 90,
+      uInt16Field    = 1234,
+      uInt32Field    = 56789012,
+      uInt64Field    = 345678901234567890,
+      float32Field   = -1.25e-10,
+      float64Field   = 345,
+      textField      = "baz",
+      dataField      = "qux",
+      structField    = (
+          textField = "nested",
+          structField = (textField = "really nested")),
+      enumField      = baz,
+      # interfaceField can't have a default
+ 
+      voidList      = [void, void, void],
+      boolList      = [false, true, false, true, true],
+      int8List      = [12, -34, -0x80, 0x7f],
+      int16List     = [1234, -5678, -0x8000, 0x7fff],
+      int32List     = [12345678, -90123456, -0x80000000, 0x7fffffff],
+      int64List     = [123456789012345, -678901234567890, -0x8000000000000000, 0x7fffffffffffffff],
+      uInt8List     = [12, 34, 0, 0xff],
+      uInt16List    = [1234, 5678, 0, 0xffff],
+      uInt32List    = [12345678, 90123456, 0, 0xffffffff],
+      uInt64List    = [123456789012345, 678901234567890, 0, 0xffffffffffffffff],
+      float32List   = [0, 1234567, 1e37, -1e37, 1e-37, -1e-37],
+      float64List   = [0, 123456789012345, 1e306, -1e306, 1e-306, -1e-306],
+      textList      = ["quux", "corge", "grault"],
+      dataList      = ["garply", "waldo", "fred"],
+      structList    = [
+          (textField = "x structlist 1"),
+          (textField = "x structlist 2"),
+          (textField = "x structlist 3")],
+      enumList      = [qux, bar, grault]
+      # interfaceList can't have a default
+      );
   const enumConst      :TestEnum = corge;
 
   const voidListConst      :List(Void)    = [void, void, void, void, void, void];
@@ -582,12 +582,12 @@ const globalInt :UInt32 = 12345;
 const globalText :Text = "foobar";
 const globalStruct :TestAllTypes = (int32Field = 54321);
 const globalPrintableStruct :TestPrintInlineStructs = (someText = "foo");
-#const derivedConstant :TestAllTypes = (
-#    uInt32Field = .globalInt,
-#    textField = TestConstants.textConst,
-#    structField = TestConstants.structConst,
-#    int16List = TestConstants.int16ListConst,
-#    structList = TestConstants.structListConst);
+const derivedConstant :TestAllTypes = (
+    uInt32Field = .globalInt,
+    textField = TestConstants.textConst,
+    structField = TestConstants.structConst,
+    int16List = TestConstants.int16ListConst,
+    structList = TestConstants.structListConst);
 
 interface TestInterface {
   foo @0 (i :UInt32, j :Bool) -> (x :Text);
@@ -595,11 +595,11 @@ interface TestInterface {
   baz @2 (s: TestAllTypes);
 }
 
-#interface TestExtends extends(TestInterface) {
-#  qux @0 ();
-#  corge @1 TestAllTypes -> ();
-#  grault @2 () -> TestAllTypes;
-#}
+interface TestExtends extends(TestInterface) {
+  qux @0 ();
+  corge @1 TestAllTypes -> ();
+  grault @2 () -> TestAllTypes;
+}
 
 interface TestPipeline {
   getCap @0 (n: UInt32, inCap :TestInterface) -> (s: Text, outBox :Box);
@@ -631,35 +631,35 @@ interface TestTailCaller {
   foo @0 (i :Int32, callee :TestTailCallee) -> TestTailCallee.TailResult;
 }
 
-#interface TestMoreStuff extends(TestCallOrder) {
-#  # Catch-all type that contains lots of testing methods.
-#
-#  callFoo @0 (cap :TestInterface) -> (s: Text);
-#  # Call `cap.foo()`, check the result, and return "bar".
-#
-#  callFooWhenResolved @1 (cap :TestInterface) -> (s: Text);
-#  # Like callFoo but waits for `cap` to resolve first.
-#
-#  neverReturn @2 (cap :TestInterface) -> (capCopy :TestInterface);
-#  # Doesn't return.  You should cancel it.
-#
-#  hold @3 (cap :TestInterface) -> ();
-#  # Returns immediately but holds on to the capability.
-#
-#  callHeld @4 () -> (s: Text);
-#  # Calls the capability previously held using `hold` (and keeps holding it).
-#
-#  getHeld @5 () -> (cap :TestInterface);
-#  # Returns the capability previously held using `hold` (and keeps holding it).
-#
-#  echo @6 (cap :TestCallOrder) -> (cap :TestCallOrder);
-#  # Just returns the input cap.
-#
-#  expectCancel @7 (cap :TestInterface) -> ();
-#  # evalLater()-loops forever, holding `cap`.  Must be canceled.
-#
-#  methodWithDefaults @8 (a :Text, b :UInt32 = 123, c :Text = "foo") -> (d :Text, e :Text = "bar");
-#}
+interface TestMoreStuff extends(TestCallOrder) {
+  # Catch-all type that contains lots of testing methods.
+
+  callFoo @0 (cap :TestInterface) -> (s: Text);
+  # Call `cap.foo()`, check the result, and return "bar".
+
+  callFooWhenResolved @1 (cap :TestInterface) -> (s: Text);
+  # Like callFoo but waits for `cap` to resolve first.
+
+  neverReturn @2 (cap :TestInterface) -> (capCopy :TestInterface);
+  # Doesn't return.  You should cancel it.
+
+  hold @3 (cap :TestInterface) -> ();
+  # Returns immediately but holds on to the capability.
+
+  callHeld @4 () -> (s: Text);
+  # Calls the capability previously held using `hold` (and keeps holding it).
+
+  getHeld @5 () -> (cap :TestInterface);
+  # Returns the capability previously held using `hold` (and keeps holding it).
+
+  echo @6 (cap :TestCallOrder) -> (cap :TestCallOrder);
+  # Just returns the input cap.
+
+  expectCancel @7 (cap :TestInterface) -> ();
+  # evalLater()-loops forever, holding `cap`.  Must be canceled.
+
+  methodWithDefaults @8 (a :Text, b :UInt32 = 123, c :Text = "foo") -> (d :Text, e :Text = "bar");
+}
 
 interface TestKeywordMethods {
   delete @0 ();

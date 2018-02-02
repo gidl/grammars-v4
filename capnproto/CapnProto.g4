@@ -27,10 +27,12 @@ struct_content :
 	| struct_def | group_def | const_def | inner_using ;
 
 interface_def :
-	'interface' type '{' interface_content* '}' ;
+	'interface' type ( 'extends' '(' NAME ')' )? '{' interface_content* '}' ;
 
 interface_content : 
-	field_def | enum_def | named_union_def | unnamed_union_def | struct_def | function_def | interface_def ;
+	field_def | enum_def | named_union_def 
+	| unnamed_union_def | interface_def 
+	| struct_def | function_def ;
 
 field_def :	
 	NAME LOCATOR ':' type ( '=' const_value )? ';' ;
@@ -68,13 +70,15 @@ group_content :
 	field_def | unnamed_union_def | named_union_def ;
 	
 function_def :
-	NAME LOCATOR function_parameters
-	( '->' ( function_parameters | type ) )?	
+	NAME LOCATOR? ( function_parameters | type )
+	( '->' ( function_parameters | type ) )?
 	';' ;
 
 function_parameters :
 	'(' 
-		( NAME ':' type ( ',' NAME ':' type )* )?
+		( NAME ':' type ( '=' const_value )?
+			( ',' NAME ':' type ( '=' const_value )? )*
+		)?
 	')' ;
 	
 annotation_def :
@@ -84,7 +88,9 @@ const_def :
 	'const' NAME ':' type '=' const_value ';' ;
 	
 const_value :
-	'-'? NAME | INTEGER | FLOAT | TEXT | BOOLEAN | HEXADECIMAL | VOID | literal_list | literal_union | literal_bytes ;
+	'-'? '.'? NAME ( '.' NAME )? | INTEGER | FLOAT 
+	| TEXT | BOOLEAN | HEXADECIMAL | VOID 
+	| literal_list | literal_union | literal_bytes ;
 	
 literal_union :
 	'(' NAME '=' union_mapping ( ',' NAME '=' union_mapping )* ')' ;

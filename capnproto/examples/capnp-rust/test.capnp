@@ -194,10 +194,10 @@ struct TestDefaults {
       float64List   = [0, 123456789012345, 1e306, -1e306, 1e-306, -1e-306],
       textList      = ["quux", "corge", "grault"],
       dataList      = ["garply", "waldo", "fred"],
-#      structList    = [
-#          (textField = "x structlist 1"),
-#          (textField = "x structlist 2"),
-#          (textField = "x structlist 3")],
+      structList    = [
+          (textField = "x structlist 1"),
+          (textField = "x structlist 2"),
+          (textField = "x structlist 3")],
       enumList      = [qux, bar, grault]
       # interfaceList can't have a default
       );
@@ -219,10 +219,10 @@ struct TestDefaults {
    float64List   @28 : List(Float64) = [7777.75, inf, -inf, nan];
    textList      @29 : List(Text)    = ["plugh", "xyzzy", "thud"];
    dataList      @30 : List(Data)    = ["oops", "exhausted", "rfc3092"];
-#   structList    @31 : List(TestAllTypes) = [
-#       (textField = "structlist 1"),
-#       (textField = "structlist 2"),
-#       (textField = "structlist 3")];
+   structList    @31 : List(TestAllTypes) = [
+       (textField = "structlist 1"),
+       (textField = "structlist 2"),
+       (textField = "structlist 3")];
    enumList      @32 : List(TestEnum) = [foo, garply];
    interfaceList @33 : List(Void);  # TODO
 }
