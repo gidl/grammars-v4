@@ -355,11 +355,11 @@ struct TestGenerics(Foo, Bar) {
   }
 
   interface Inter2face(Qux) {
-#    call @0 Inner2(Text) -> (qux :Qux, gen :TestGenerics(TestAllTypes, TestAnyPointer));
-#    otherCall @1 Inner2(List(Text)) -> Inner2(List(Int16));
+    call @0 Inner2(Text) -> (qux :Qux, gen :TestGenerics(TestAllTypes, TestAnyPointer));
+    otherCall @1 Inner2(List(Text)) -> Inner2(List(Int16));
   }
 
-#  annotation ann(struct) :Foo;
+  annotation ann(struct) :Foo;
 
   using AliasFoo = Foo;
   using AliasInner = Inner;
@@ -463,45 +463,45 @@ struct TestConstants {
    const textConst     :Text    = "foo";
 #   const complexTextConst :Text    = "foo\"☺\'$$$";
    const dataConst      :Data    = "bar";
-#   const structConst    :TestAllTypes = (
-#      voidField      = void,
-#      boolField      = true,
-#      int8Field      = -12,
-#      int16Field     = 3456,
-#      int32Field     = -78901234,
-#      int64Field     = 56789012345678,
-#      uInt8Field     = 90,
-#      uInt16Field    = 1234,
-#      uInt32Field    = 56789012,
-#      uInt64Field    = 345678901234567890,
-#      float32Field   = -1.25e-10,
-#      float64Field   = 345,
-#      textField      = "baz",
-#      dataField      = "qux",
-#      structField    = (
-#          textField = "nested",
-#          structField = (textField = "really nested")),
-#      enumField      = baz,
-#      voidList      = [void, void, void],
-#      boolList      = [false, true, false, true, true],
-#      int8List      = [12, -34, -0x80, 0x7f],
-#      int16List     = [1234, -5678, -0x8000, 0x7fff],
-#      int32List     = [12345678, -90123456, -0x80000000, 0x7fffffff],
-#      int64List     = [123456789012345, -678901234567890, -0x8000000000000000, 0x7fffffffffffffff],
-#      uInt8List     = [12, 34, 0, 0xff],
-#      uInt16List    = [1234, 5678, 0, 0xffff],
-#      uInt32List    = [12345678, 90123456, 0, 0xffffffff],
-#      uInt64List    = [123456789012345, 678901234567890, 0, 0xffffffffffffffff],
-#      float32List   = [0, 1234567, 1e37, -1e37, 1e-37, -1e-37],
-#      float64List   = [0, 123456789012345, 1e306, -1e306, 1e-306, -1e-306],
-#      textList      = ["quux", "corge", "grault"],
-#      dataList      = ["garply", "waldo", "fred"],
-#      structList    = [
-#          (textField = "x structlist 1"),
-#          (textField = "x structlist 2"),
-#          (textField = "x structlist 3")],
-#      enumList      = [qux, bar, grault]
-#      );
+   const structConst    :TestAllTypes = (
+      voidField      = void,
+      boolField      = true,
+      int8Field      = -12,
+      int16Field     = 3456,
+      int32Field     = -78901234,
+      int64Field     = 56789012345678,
+      uInt8Field     = 90,
+      uInt16Field    = 1234,
+      uInt32Field    = 56789012,
+      uInt64Field    = 345678901234567890,
+      float32Field   = -1.25e-10,
+      float64Field   = 345,
+      textField      = "baz",
+      dataField      = "qux",
+      structField    = (
+          textField = "nested",
+          structField = (textField = "really nested")),
+      enumField      = baz,
+      voidList      = [void, void, void],
+      boolList      = [false, true, false, true, true],
+      int8List      = [12, -34, -0x80, 0x7f],
+      int16List     = [1234, -5678, -0x8000, 0x7fff],
+      int32List     = [12345678, -90123456, -0x80000000, 0x7fffffff],
+      int64List     = [123456789012345, -678901234567890, -0x8000000000000000, 0x7fffffffffffffff],
+      uInt8List     = [12, 34, 0, 0xff],
+      uInt16List    = [1234, 5678, 0, 0xffff],
+      uInt32List    = [12345678, 90123456, 0, 0xffffffff],
+      uInt64List    = [123456789012345, 678901234567890, 0, 0xffffffffffffffff],
+      float32List   = [0, 1234567, 1e37, -1e37, 1e-37, -1e-37],
+      float64List   = [0, 123456789012345, 1e306, -1e306, 1e-306, -1e-306],
+      textList      = ["quux", "corge", "grault"],
+      dataList      = ["garply", "waldo", "fred"],
+      structList    = [
+          (textField = "x structlist 1"),
+          (textField = "x structlist 2"),
+          (textField = "x structlist 3")],
+      enumList      = [qux, bar, grault]
+      );
    const enumConst      :TestEnum = corge;
    const voidListConst      :List(Void)    = [void, void, void, void, void, void];
    const boolListConst      :List(Bool)    = [true, false, false, true];
@@ -517,10 +517,10 @@ struct TestConstants {
    const float64ListConst   :List(Float64) = [7777.75, inf, -inf, nan];
    const textListConst      :List(Text)    = ["plugh", "xyzzy", "thud"];
    const dataListConst      :List(Data)    = ["oops", "exhausted", "rfc3092"];
-#   const structListConst    :List(TestAllTypes) = [
-#       (textField = "structlist 1"),
-#       (textField = "structlist 2"),
-#       (textField = "structlist 3")];
+   const structListConst    :List(TestAllTypes) = [
+       (textField = "structlist 1"),
+       (textField = "structlist 2"),
+       (textField = "structlist 3")];
    const enumListConst      :List(TestEnum) = [foo, garply];
 }
 
@@ -532,11 +532,11 @@ interface TestInterface {
    bazz @3 (s : TestBigStruct) -> (r : TestBigStruct);
 }
 
-#interface TestExtends extends(TestInterface) {
-#   qux @0 ();
-#   corge @1 TestBigStruct -> ();
-#   grault @2 () -> TestBigStruct;
-#}
+interface TestExtends extends(TestInterface) {
+   qux @0 ();
+   corge @1 TestBigStruct -> ();
+   grault @2 () -> TestBigStruct;
+}
 
 struct TestCapabilityList {
    foo @0 :List(TestInterface);
@@ -630,4 +630,4 @@ struct Map(Key, Value) {
 
 interface GenericBase(T) {}
 
-#interface GenericExtend extends(GenericBase(Data)) {}
+interface GenericExtend extends(GenericBase(Data)) {}

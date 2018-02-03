@@ -27,7 +27,7 @@ struct_content :
 	| struct_def | group_def | const_def | inner_using ;
 
 interface_def :
-	'interface' type ( 'extends' '(' NAME ')' )? '{' interface_content* '}' ;
+	'interface' type ( 'extends' '(' type ')' )? '{' interface_content* '}' ;
 
 interface_content : 
 	field_def | enum_def | named_union_def 
@@ -82,7 +82,10 @@ function_parameters :
 	')' ;
 	
 annotation_def :
-	'annotation' type ':' type ';' ;
+	'annotation' type annotation_parameters? ':' type ';' ;
+
+annotation_parameters :
+	'(' 'struct' ')' ;
 	
 const_def :
 	'const' NAME ':' type '=' const_value ';' ;
