@@ -19,7 +19,7 @@ document_content :
 	struct_def | interface_def | function_def | annotation_def | const_def | enum_def ;
 
 struct_def :
-	'struct' type annotation_reference2? '{' struct_content* '}' ;
+	'struct' type annotation_reference? '{' struct_content* '}' ;
 
 struct_content : 
 	field_def | enum_def | named_union_def 
@@ -46,16 +46,13 @@ inner_type :
 	'(' type inner_type? ( ',' type inner_type? )* ')' ;
 	
 enum_def :
-	'enum' NAME annotation_reference1? '{' enum_content* '}' ;
+	'enum' NAME annotation_reference? '{' enum_content* '}' ;
 
-annotation_reference1 :
-	'$' NAME '.' NAME '(' TEXT ')' ;
-
-annotation_reference2 :
-	'$' NAME '(' type ( ',' type )* ')' '.ann(' TEXT ')' ;
+annotation_reference :
+	'$' type '.ann'? '(' TEXT ')' ;
 	
 enum_content :
-	NAME LOCATOR annotation_reference1? ';' ;
+	NAME LOCATOR annotation_reference? ';' ;
 
 named_union_def :
 	NAME LOCATOR? ':union' '{' union_content* '}' ;
