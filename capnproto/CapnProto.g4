@@ -19,7 +19,7 @@ document_content :
 	struct_def | interface_def | function_def | annotation_def | const_def | enum_def ;
 
 struct_def :
-	'struct' type '{' struct_content* '}' ;
+	'struct' type annotation_reference2? '{' struct_content* '}' ;
 
 struct_content : 
 	field_def | enum_def | named_union_def 
@@ -40,19 +40,22 @@ field_def :
 type :
 	NAME 
 	inner_type?
-	( '.' NAME )? ;
+	( '.' type )? ;
 
 inner_type :
 	'(' type inner_type? ( ',' type inner_type? )* ')' ;
 	
 enum_def :
-	'enum' NAME dollar_reference? '{' enum_content* '}' ;
+	'enum' NAME annotation_reference1? '{' enum_content* '}' ;
 
-dollar_reference :
+annotation_reference1 :
 	'$' NAME '.' NAME '(' TEXT ')' ;
+
+annotation_reference2 :
+	'$' NAME '(' type ( ',' type )* ')' '.ann(' TEXT ')' ;
 	
 enum_content :
-	NAME LOCATOR dollar_reference? ';' ;
+	NAME LOCATOR annotation_reference1? ';' ;
 
 named_union_def :
 	NAME LOCATOR? ':union' '{' union_content* '}' ;
@@ -70,10 +73,15 @@ group_content :
 	field_def | unnamed_union_def | named_union_def ;
 	
 function_def :
-	NAME LOCATOR? ( function_parameters | type )
+	NAME LOCATOR? generic_type_parameters? ( function_parameters | type )
 	( '->' ( function_parameters | type ) )?
 	';' ;
 
+generic_type_parameters :
+	'[' 
+		NAME ( ',' NAME )*
+	']' ;
+	
 function_parameters :
 	'(' 
 		( NAME ':' type ( '=' const_value )?
